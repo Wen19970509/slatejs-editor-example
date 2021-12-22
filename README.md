@@ -22,8 +22,3 @@
 
 -   `tailwind.config.js` 撰寫 TailwindCSS 自訂設定 <br>
     [設定](https://tailwindcss.tw/docs/configuration)
-
--   另加入 `tailwindcss-named-groups`插件，做多組 group 命名<br>
-    [插件](https://www.npmjs.com/package/tailwindcss-named-groups)
--   `tailwindcss/aspect-ratio` 插件為提供照片顯示比例功能之插件 <br>
-    [插件](https://www.npmjs.com/package/@tailwindcss/aspect-ratio)
