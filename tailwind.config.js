@@ -9,6 +9,7 @@ module.exports = {
             desktop: '1280px', // 較大桌機
         },
     },
+    // important: true,
     variants: {
         extend: {
             display: ['group-hover'],

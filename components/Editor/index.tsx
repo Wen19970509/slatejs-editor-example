@@ -1,11 +1,14 @@
-import { createEditor, Descendant, Editor, Transforms, Element, Text } from 'slate';
+import { createEditor, Descendant, Editor, Transforms, Element, Text, Node } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import React from 'react';
 import CodeElement from './elements/CodeElement';
 import DefaultElement from './elements/DefaultElement';
-import InlineStyles from './elements/InlineStyles';
-import CustomEditor from './customSettings';
+import Leaf from './elements/Leaf';
+import CustomEditor from './utils/customSettings';
+import { HOTKEYS } from './utils/hotkeys';
+import isHotkey from 'is-hotkey';
+import HoverToolbar from './HoverToolbar';
 
 const SlateEditor = () => {
     // @refresh reset
@@ -16,7 +19,8 @@ const SlateEditor = () => {
             children: [{ text: '' }],
         },
     ];
-    const [value, setValue] = React.useState<Descendant[]>(initialValue);
+    //value 讀取LocalStorage 是否有內容，若無則調用初始設定
+    const [value, setValue] = React.useState<Descendant[]>(JSON.parse(typeof window !== 'undefined' && localStorage.getItem('content')) || initialValue);
 
     // 初始editor 設定，使用官方提供的useMemo 撰寫，在熱開發狀態會報錯
     const editorRef = React.useRef<any>();
@@ -34,55 +38,41 @@ const SlateEditor = () => {
     }, []);
     //inline style控制
     const renderLeaf = React.useCallback((props) => {
-        return <InlineStyles {...props} />;
+        return <Leaf {...props} />;
     }, []);
+
     return (
-        <React.Fragment>
-            <Slate editor={editor} value={value} onChange={(newValue) => setValue(newValue)}>
-                <div>
-                    <button
-                        onMouseDown={(event) => {
+        <Slate
+            editor={editor}
+            value={value}
+            onChange={(newValue) => {
+                setValue(newValue);
+                //將變更的資料用Json形式預存至LocalStorage內
+                const isAstChange = editor.operations.some((op) => 'set_selection' !== op.type);
+                if (isAstChange) {
+                    const content = JSON.stringify(newValue);
+                    typeof window !== 'undefined' && localStorage.setItem('content', content);
+                }
+            }}
+        >
+            <HoverToolbar />
+            <Editable
+                placeholder={'請輸入文字'}
+                renderElement={renderElement}
+                renderLeaf={renderLeaf}
+                autoFocus
+                spellCheck={false}
+                onKeyDown={(event) => {
+                    for (const hotkey in HOTKEYS) {
+                        if (isHotkey(hotkey, event as any)) {
                             event.preventDefault();
-                            CustomEditor.toggleBoldMark(editor);
-                        }}
-                    >
-                        Bold
-                    </button>
-                    <br />
-                    <button
-                        onMouseDown={(event) => {
-                            event.preventDefault();
-                            CustomEditor.toggleCodeBlock(editor);
-                        }}
-                    >
-                        Code Block
-                    </button>
-                </div>
-                <Editable
-                    placeholder={'請輸入文字'}
-                    renderElement={renderElement}
-                    renderLeaf={renderLeaf}
-                    onKeyDown={(e) => {
-                        console.log(e.key);
-                        if (!e.ctrlKey) {
-                            return;
+                            const mark = HOTKEYS[hotkey];
+                            CustomEditor.toggleFormat(editor, mark);
                         }
-                        switch (e.key) {
-                            case '`': {
-                                e.preventDefault();
-                                CustomEditor.toggleCodeBlock(editor);
-                                break;
-                            }
-                            case 'b': {
-                                e.preventDefault();
-                                CustomEditor.toggleBoldMark(editor);
-                                break;
-                            }
-                        }
-                    }}
-                />
-            </Slate>
-        </React.Fragment>
+                    }
+                }}
+            />
+        </Slate>
     );
 };
 

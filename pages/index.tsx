@@ -3,12 +3,12 @@ const Home = () => {
     return (
         <div className='min-h-screen flex flex-col'>
             <h1 className='text-center mt-7 text-indigo-500'>SlateEditor Example </h1>
-            {/* <p className='text-center text-blue-700 my-4 underline decoration-1'>
-                <a href='https://github.com/Wen19970509/nextjs-draftjs-editor-example' target='_blank'>
+            <p className='text-center text-blue-700 my-4 underline decoration-1'>
+                <a href='https://github.com/Wen19970509/slateEditor-nextjs-example.git' target='_blank'>
                     GitHub
                 </a>
-            </p> */}
-            <div className='px-56 flex-grow flex'>
+            </p>
+            <div className='px-56 flex-grow flex-row'>
                 <SlateEditor />
             </div>
         </div>

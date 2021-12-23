@@ -2,18 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
+code {
+    font-family: monospace;
+}
+:not(pre) > code {
+    font-family: monospace;
+    background-color: #eee;
+    padding: 3px;
+}
 /* base層 defalut設定 */
 @layer base {
-  * {
-    @apply p-0 m-0 box-border;
-  }
-  h1 {
-    @apply text-2xl;
-  }
-  h2 {
-    @apply text-xl;
-  }
-  h3 {
-    @apply text-lg;
-  }
+    u {
+        @apply underline;
+    }
+    * {
+        @apply p-0 m-0 box-border;
+    }
+    h1 {
+        @apply text-2xl;
+    }
+    h2 {
+        @apply text-xl;
+    }
+    h3 {
+        @apply text-lg;
+    }
+}
+
+@layer utilities {
+    .-top-10000 {
+        top: -10000px;
+    }
+    .-left-10000 {
+        left: -10000px;
+    }
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
 }
