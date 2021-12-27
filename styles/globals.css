@@ -2,30 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-code {
-    font-family: monospace;
-}
-:not(pre) > code {
-    font-family: monospace;
-    background-color: #eee;
-    padding: 3px;
-}
 /* base層 defalut設定 */
 @layer base {
-    u {
-        @apply underline;
-    }
     * {
         @apply p-0 m-0 box-border;
     }
-    h1 {
-        @apply text-2xl;
+    textarea {
+        @apply leading-6;
     }
-    h2 {
+    p,
+    li {
         @apply text-xl;
     }
+    li {
+        @apply mt-3;
+    }
+    u {
+        @apply underline;
+    }
+    h1 {
+        @apply text-5xl;
+    }
+    h2 {
+        @apply text-3xl;
+    }
     h3 {
-        @apply text-lg;
+        @apply text-2xl;
+    }
+    ul {
+        @apply list-disc list-inside;
+    }
+    ol {
+        @apply list-decimal list-inside;
+    }
+    blockquote {
+        border-left: 2px solid #ddd;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 10px;
+        color: #aaa;
+        font-style: italic;
+        @apply text-xl;
+    }
+    blockquote[dir='rtl'] {
+        border-left: none;
+        padding-left: 0;
+        padding-right: 10px;
+        border-right: 2px solid #ddd;
+    }
+    code {
+        font-family: monospace;
+        font-size: larger;
+    }
+    :not(pre) > code {
+        font-family: monospace;
+        background-color: #eee;
+        padding: 3px;
+    }
+
+    [data-slate-editor] {
+        @apply pl-4 pt-4;
+    }
+    [data-slate-editor] > * + * {
+        @apply mt-4;
     }
 }
 
@@ -42,7 +81,6 @@ code {
     font-family: 'Material Icons';
     font-weight: normal;
     font-style: normal;
-    font-size: 24px; /* Preferred icon size */
     display: inline-block;
     line-height: 1;
     text-transform: none;

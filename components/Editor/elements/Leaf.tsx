@@ -12,7 +12,10 @@ const Leaf = ({ attributes, children, leaf }) => {
     }
 
     if (leaf.underline) {
-        children = <span style={{ textDecoration: 'underline' }}>{children}</span>;
+        children = <u>{children}</u>;
+    }
+    if (leaf.strikethrough) {
+        children = <del>{children}</del>;
     }
 
     return <span {...attributes}>{children}</span>;
