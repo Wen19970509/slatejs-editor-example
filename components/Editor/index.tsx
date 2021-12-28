@@ -1,4 +1,4 @@
-import { createEditor, Descendant, Editor, Transforms, Element, Text, Node } from 'slate';
+import { createEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import React from 'react';
@@ -9,6 +9,9 @@ import { HOTKEYS } from './utils/hotkeys';
 import isHotkey from 'is-hotkey';
 import HoverToolbar from './HoverToolbar';
 import SideToolbar from '@components/Editor/SideToolbar';
+import { withImages } from './elements/Image';
+import { withLinks } from './elements/Link';
+import { withEditableCards } from './elements/EditableCard';
 
 const SlateEditor = () => {
     // @refresh reset
@@ -25,7 +28,7 @@ const SlateEditor = () => {
     //讀取LocalStorage
     // 初始editor 設定，使用官方提供的useMemo 撰寫，在熱開發狀態會報錯
     const editorRef = React.useRef<any>();
-    if (!editorRef.current) editorRef.current = withHistory(withReact(createEditor()));
+    if (!editorRef.current) editorRef.current = withEditableCards(withLinks(withImages(withHistory(withReact(createEditor())))));
     const editor = editorRef.current;
 
     //CustomElement 切換 ，使用useCallback減少FC多餘呼叫
@@ -33,6 +36,7 @@ const SlateEditor = () => {
     //Format控制
     const renderLeaf = React.useCallback((props) => <Leaf {...props} />, []);
 
+    //Image
     return (
         <Slate
             editor={editor}

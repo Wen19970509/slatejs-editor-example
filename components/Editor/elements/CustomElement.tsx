@@ -1,5 +1,15 @@
-const CustomElement = ({ attributes, children, element }) => {
+import { EditableCard } from './EditableCard';
+import { Image } from './Image';
+import { LinkComponent } from './Link';
+const CustomElement = (props) => {
+    const { attributes, children, element } = props;
     switch (element.type) {
+        case 'editable-card':
+            return <EditableCard {...props} />;
+        case 'link':
+            return <LinkComponent {...props} />;
+        case 'image':
+            return <Image {...props} />;
         case 'block-quote':
             return <blockquote {...attributes}>{children}</blockquote>;
         case 'bulleted-list':

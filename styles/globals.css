@@ -7,6 +7,9 @@
     * {
         @apply p-0 m-0 box-border;
     }
+    a {
+        @apply underline text-blue-700;
+    }
     textarea {
         @apply leading-6;
     }
@@ -35,6 +38,11 @@
     ol {
         @apply list-decimal list-inside;
     }
+
+    input:focus {
+        outline: 0;
+        border-color: blue;
+    }
     blockquote {
         border-left: 2px solid #ddd;
         margin-left: 0;
@@ -61,7 +69,7 @@
     }
 
     [data-slate-editor] {
-        @apply pl-4 pt-4;
+        @apply px-6 pt-6;
     }
     [data-slate-editor] > * + * {
         @apply mt-4;
@@ -74,6 +82,20 @@
     }
     .-left-10000 {
         left: -10000px;
+    }
+    .max-h-20em {
+        max-height: 20em;
+    }
+    .w-unset {
+        width: unset;
+    }
+    .text-input {
+        box-sizing: border-box;
+        font-size: 0.85em;
+        width: 100%;
+        padding: 0.5em;
+        border: 2px solid #ddd;
+        background: #fafafa;
     }
 }
 

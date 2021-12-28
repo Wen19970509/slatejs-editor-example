@@ -1,8 +1,13 @@
 //inlines ,blocks 設定
-import { Editor, Text, Element, Transforms } from 'slate';
+import { Editor, Text, Element, Transforms, Range, BaseEditor } from 'slate';
+import { HistoryEditor } from 'slate-history';
+import { ReactEditor } from 'slate-react';
+import { EditableCardElement, ImageElement, LinkElement } from '../types';
+import isUrl from 'is-url';
+import imageExtensions from 'image-extensions';
 
 const CustomEditor = {
-    isBlockActive(editor, format) {
+    isBlockActive(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
         const { selection } = editor;
         if (!selection) return false;
         const [match] = Array.from(
@@ -13,21 +18,22 @@ const CustomEditor = {
 
         return !!match;
     },
-    isFormatActive(editor, format) {
+    isFormatActive(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
         const [match] = Editor.nodes(editor, {
             match: (n) => n[format] === true,
             mode: 'all',
         });
         return !!match;
     },
+
     List_TYPES: ['numbered-list', 'bulleted-list'],
     //文字樣式
-    toggleFormat(editor, format) {
+    toggleFormat(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
         const isActive = CustomEditor.isFormatActive(editor, format);
         Transforms.setNodes(editor, { [format]: isActive ? null : true }, { match: Text.isText, split: true });
     },
     //block區塊樣式
-    toggleBlock(editor, format) {
+    toggleBlock(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
         const isActive = CustomEditor.isBlockActive(editor, format);
         const isList = CustomEditor.List_TYPES.includes(format);
         Transforms.unwrapNodes(editor, {
@@ -43,6 +49,64 @@ const CustomEditor = {
             const block = { type: format, children: [] };
             Transforms.wrapNodes(editor, block);
         }
+    },
+    //Link
+    isLinkActive(editor: BaseEditor & ReactEditor & HistoryEditor) {
+        const [link] = Editor.nodes(editor, {
+            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
+        });
+        return !!link;
+    },
+    unwrapLink(editor: BaseEditor & ReactEditor & HistoryEditor) {
+        Transforms.unwrapNodes(editor, {
+            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
+        });
+    },
+    wrapLink(editor: BaseEditor & ReactEditor & HistoryEditor, url: string) {
+        if (CustomEditor.isLinkActive(editor)) {
+            CustomEditor.unwrapLink(editor);
+        }
+
+        const { selection } = editor;
+        const isCollapsed = selection && Range.isCollapsed(selection);
+        const link: LinkElement = {
+            type: 'link',
+            url,
+            children: isCollapsed ? [{ text: url }] : [],
+        };
+
+        if (isCollapsed) {
+            Transforms.insertNodes(editor, link);
+        } else {
+            Transforms.wrapNodes(editor, link, { split: true });
+            Transforms.collapse(editor, { edge: 'end' });
+        }
+    },
+    insertLink(editor: BaseEditor & ReactEditor & HistoryEditor, url: string) {
+        if (editor.selection) {
+            CustomEditor.wrapLink(editor, url);
+        }
+    },
+
+    //image
+    insertImage(editor: BaseEditor & ReactEditor & HistoryEditor, url: any) {
+        const text = { text: '' };
+        const image: ImageElement = { type: 'image', url, children: [text] };
+        Transforms.insertNodes(editor, image);
+    },
+    isImageUrl(url: string) {
+        if (!url) return false;
+        if (!isUrl(url)) return false;
+        const ext = new URL(url).pathname.split('.').pop();
+        return imageExtensions.includes(ext);
+    },
+    insertEditableCard(editor: BaseEditor & ReactEditor & HistoryEditor) {
+        const text = { text: '' };
+        const voidNode: EditableCardElement = {
+            type: 'editable-card',
+            children: [text],
+        };
+        Transforms.insertNodes(editor, voidNode);
     },
 };
 

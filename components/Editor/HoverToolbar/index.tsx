@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Range, Editor } from 'slate';
-import { FormatButton } from '../components';
+import { FormatButton, AddLinkButton, RemoveLinkButton } from '../components';
 
 const HoverToolbar = () => {
     const ref = React.useRef<HTMLDivElement | null>();
@@ -19,7 +19,9 @@ const HoverToolbar = () => {
             el.removeAttribute('style');
             return;
         }
-
+        const test = () => {
+            return <div className=''></div>;
+        };
         const domSelection = window.getSelection();
         const domRange = domSelection.getRangeAt(0);
         const rect = domRange.getBoundingClientRect();
@@ -36,6 +38,8 @@ const HoverToolbar = () => {
             <FormatButton format='underline' icon='format_underlined' />
             <FormatButton format='strikethrough' icon='format_strikethrough' />
             <FormatButton format='code' icon='code' />
+            <AddLinkButton />
+            <RemoveLinkButton />
         </div>
     );
 };
