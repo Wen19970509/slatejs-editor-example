@@ -21,6 +21,7 @@ export type ImageElement = {
     url: string;
     children: EmptyText[];
 };
+export type TitleElement = { type: 'title'; children: Descendant[] };
 export type ListItemElement = { type: 'list-item'; children: Descendant[] };
 export type EmptyText = {
     text: string;
@@ -36,7 +37,7 @@ export type BulletedListElement = {
     type: 'bulleted-list';
     children: Descendant[];
 };
-export type CustomElement = CodeElement | ParagraphElement | HeadingElement | ImageElement | LinkElement | EditableCardElement;
+export type CustomElement = CodeElement | ParagraphElement | HeadingElement | ImageElement | LinkElement | EditableCardElement | TitleElement;
 export type CustomText = { text: string };
 
 declare module 'slate' {

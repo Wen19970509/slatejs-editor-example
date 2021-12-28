@@ -24,7 +24,7 @@
         @apply underline;
     }
     h1 {
-        @apply text-5xl;
+        @apply text-5xl mb-6;
     }
     h2 {
         @apply text-3xl;

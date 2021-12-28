@@ -2,9 +2,10 @@
 import { Editor, Text, Element, Transforms, Range, BaseEditor } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
-import { EditableCardElement, ImageElement, LinkElement } from '../types';
+import { EditableCardElement, ImageElement, LinkElement, ParagraphElement } from '../types';
 import isUrl from 'is-url';
 import imageExtensions from 'image-extensions';
+import { off } from 'process';
 
 const CustomEditor = {
     isBlockActive(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
@@ -15,7 +16,6 @@ const CustomEditor = {
                 match: (n) => Element.isElement(n) && n.type === format,
             }),
         );
-
         return !!match;
     },
     isFormatActive(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
@@ -25,7 +25,34 @@ const CustomEditor = {
         });
         return !!match;
     },
-
+    isFormatDisabled(editor: BaseEditor & ReactEditor & HistoryEditor, format: undefined) {
+        const [disabled] = Array.from(
+            Editor.nodes(editor, {
+                match: (n) => {
+                    if (Element.isElement(n)) {
+                        const isHead = CustomEditor.Head_TYPES.includes(n.type);
+                        const isList = CustomEditor.List_TYPES.includes(n.type);
+                        if (isHead) {
+                            return true;
+                        }
+                        if (isList) {
+                            switch (format) {
+                                case 'code':
+                                    return true;
+                                case 'strikethrough':
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                        return false;
+                    }
+                },
+            }),
+        );
+        return disabled;
+    },
+    Head_TYPES: ['title', 'heading-two', 'heading-three', 'block-quote'],
     List_TYPES: ['numbered-list', 'bulleted-list'],
     //文字樣式
     toggleFormat(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
@@ -92,7 +119,13 @@ const CustomEditor = {
     insertImage(editor: BaseEditor & ReactEditor & HistoryEditor, url: any) {
         const text = { text: '' };
         const image: ImageElement = { type: 'image', url, children: [text] };
+        const paragraph: ParagraphElement = {
+            type: 'paragraph',
+            children: [{ text: '' }],
+        };
         Transforms.insertNodes(editor, image);
+        //預留一個p element
+        Transforms.insertNodes(editor, paragraph);
     },
     isImageUrl(url: string) {
         if (!url) return false;
@@ -106,7 +139,13 @@ const CustomEditor = {
             type: 'editable-card',
             children: [text],
         };
+        const paragraph: ParagraphElement = {
+            type: 'paragraph',
+            children: [{ text: '' }],
+        };
         Transforms.insertNodes(editor, voidNode);
+        //預留一個p element
+        Transforms.insertNodes(editor, paragraph);
     },
 };
 

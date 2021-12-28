@@ -14,7 +14,7 @@ const CustomElement = (props) => {
             return <blockquote {...attributes}>{children}</blockquote>;
         case 'bulleted-list':
             return <ul {...attributes}>{children}</ul>;
-        case 'heading-one':
+        case 'title':
             return <h1 {...attributes}>{children}</h1>;
         case 'heading-two':
             return <h2 {...attributes}>{children}</h2>;

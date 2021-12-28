@@ -7,8 +7,8 @@ interface BaseProps {
 }
 type OrNull<T> = T | null;
 
-const ButtonSTY = (active, reversed) => {
-    return { color: reversed ? (active ? 'white' : '#aaaaaa') : active ? '#17a884' : 'white' };
+const ButtonSTY = (active: boolean, reversed: boolean, disabled: boolean) => {
+    return { color: reversed ? (disabled ? 'rgba(241, 241, 241,25%)' : active ? '#6cb387' : '#c4c4c4') : active ? '#6cb387' : 'white' };
 };
 export const Button = React.forwardRef(
     (
@@ -19,12 +19,13 @@ export const Button = React.forwardRef(
             ...props
         }: PropsWithChildren<
             {
+                disabled: boolean;
                 active: boolean;
                 reversed: boolean;
             } & BaseProps
         >,
         ref: Ref<OrNull<HTMLSpanElement>>,
-    ) => <span {...props} ref={ref} className='cursor-pointer' style={ButtonSTY(active, reversed)} />,
+    ) => <span {...props} ref={ref} className='cursor-pointer' style={ButtonSTY(active, reversed, disabled)} />,
 );
 export const DeleButton = React.forwardRef(({ ...props }: PropsWithChildren<{} & BaseProps>, ref: Ref<OrNull<HTMLSpanElement>>) => (
     <span {...props} ref={ref} className='cursor-pointer absolute bg-white top-2 left-2' />
@@ -43,8 +44,11 @@ export const FormatButton = ({ format, icon }) => {
         <Button
             reversed
             active={CustomEditor.isFormatActive(editor, format)}
+            disabled={CustomEditor.isFormatDisabled(editor, format)}
             onMouseDown={(event) => {
                 event.preventDefault();
+                //disabled
+                if (CustomEditor.isFormatDisabled(editor, format)) return;
                 CustomEditor.toggleFormat(editor, format);
             }}
         >
@@ -71,6 +75,7 @@ export const InsertImageButton = () => {
     const editor = useSlateStatic();
     return (
         <Button
+            title={'使用相片連結'}
             onMouseDown={(event) => {
                 event.preventDefault();
                 const url = window.prompt('加入相片連結:');
@@ -86,6 +91,55 @@ export const InsertImageButton = () => {
         </Button>
     );
 };
+//上傳照片
+export const UploadImageButton = () => {
+    const editor = useSlateStatic();
+    const uploaderRef = React.useRef(null);
+    const ImageUploader = () => {
+        const handleInputClick = (e) => {
+            e.stopPropagation();
+        };
+        const handleInputChange = (e) => {
+            console.log(e.target.files);
+            const files = e.target.files;
+            if (files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const url = e.target.result as string;
+                    if (!url) return;
+                    CustomEditor.insertImage(editor, url);
+                };
+            }
+        };
+        return (
+            <input
+                ref={uploaderRef}
+                className='fixed z-30 left-10 top-5 hidden'
+                type='file'
+                accept='image/*'
+                onClick={handleInputClick}
+                onChange={handleInputChange}
+                multiple={false}
+            />
+        );
+    };
+    return (
+        <Button
+            title={'上傳相片'}
+            onMouseDown={(event) => {
+                event.preventDefault();
+                if (uploaderRef.current) uploaderRef.current.click();
+            }}
+        >
+            <ImageUploader />
+            <BlockIcon>drive_folder_upload</BlockIcon>
+        </Button>
+    );
+};
+
 export const AddLinkButton = () => {
     const editor = useSlate();
     return (
@@ -128,6 +182,7 @@ export const InsertEditableCardButton = () => {
     const editor = useSlateStatic();
     return (
         <Button
+            title={'新增自訂區塊'}
             onMouseDown={(event) => {
                 event.preventDefault();
                 CustomEditor.insertEditableCard(editor);
