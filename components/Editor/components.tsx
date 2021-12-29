@@ -56,10 +56,11 @@ export const FormatButton = ({ format, icon }) => {
         </Button>
     );
 };
-export const BlockButton = ({ format, icon }) => {
+export const BlockButton = ({ format, icon, title }) => {
     const editor = useSlate();
     return (
         <Button
+            title={title}
             active={CustomEditor.isBlockActive(editor, format)}
             onMouseDown={(event) => {
                 event.preventDefault();
