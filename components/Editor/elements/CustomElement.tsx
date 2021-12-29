@@ -15,7 +15,11 @@ const CustomElement = (props) => {
         case 'bulleted-list':
             return <ul {...attributes}>{children}</ul>;
         case 'title':
-            return <h1 {...attributes}>{children}</h1>;
+            return (
+                <h1 className='mb-8' {...attributes}>
+                    {children}
+                </h1>
+            );
         case 'heading-two':
             return <h2 {...attributes}>{children}</h2>;
         case 'heading-three':
