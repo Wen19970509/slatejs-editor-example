@@ -28,7 +28,7 @@ export const Button = React.forwardRef(
     ) => <span {...props} ref={ref} className='cursor-pointer' style={ButtonSTY(active, reversed, disabled)} />,
 );
 export const DeleButton = React.forwardRef(({ ...props }: PropsWithChildren<{} & BaseProps>, ref: Ref<OrNull<HTMLSpanElement>>) => (
-    <span {...props} ref={ref} className='cursor-pointer absolute bg-white top-2 left-2' />
+    <span {...props} ref={ref} className='cursor-pointer text-red-600  absolute  top-2 left-2' />
 ));
 
 export const Icon = React.forwardRef(({ ...props }: PropsWithChildren<BaseProps>, ref: Ref<OrNull<HTMLSpanElement>>) => (
