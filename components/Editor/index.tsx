@@ -4,18 +4,15 @@ import { HistoryEditor, withHistory } from 'slate-history';
 import React from 'react';
 import CustomElement from './elements/CustomElement';
 import Leaf from './elements/Leaf';
-import CustomEditor from './utils/customSettings';
 import { HOTKEYS, keycommand } from './utils/hotkeys';
-import isHotkey from 'is-hotkey';
 import HoverToolbar from './HoverToolbar';
 import SideToolbar from '@components/Editor/SideToolbar';
 import { withImages } from './elements/Image';
 import { withLinks } from './elements/Link';
 import { withEditableCards } from './elements/EditableCard';
-import { ParagraphElement, TitleElement } from './types';
-import { withLayout } from '@components/Editor/normalizing';
-
+import Normalize from '@components/Editor/Normalize';
 const SlateEditor = () => {
+    const { withLayout } = Normalize;
     // @refresh reset
     //初始參數
     const initialValue: Descendant[] = [
@@ -28,7 +25,6 @@ const SlateEditor = () => {
             children: [{ text: '開始寫作吧!' }],
         },
     ];
-
     //value 讀取LocalStorage 是否有內容，若無則調用初始設定
     const [value, setValue] = React.useState<Descendant[]>(initialValue);
     //(JSON.parse(typeof window !== 'undefined' && localStorage.getItem('content')) || initialValue)
