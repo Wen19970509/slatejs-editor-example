@@ -1,10 +1,9 @@
-// noinspection FallThroughInSwitchStatementJS
-
 import { Transforms, Element, Node, BaseEditor } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
 import { ParagraphElement, TitleElement } from '@components/Editor/types';
-
+import CustomEditor from '@components/Editor/utils/customSettings';
+//各段落樣式設定
 const Normalized = {
     //預設Layout ,強制內文必須包含H1 title
     withLayout(editor: BaseEditor & ReactEditor & HistoryEditor) {
@@ -55,26 +54,6 @@ const Normalized = {
             }
             return normalizeNode([node, path]);
         };
-        return editor;
-    },
-    withNormalized(editor: BaseEditor & ReactEditor & HistoryEditor) {
-        const { normalizeNode } = editor;
-
-        editor.normalizeNode = (entry) => {
-            const [node, path] = entry;
-
-            // If the element is a paragraph, ensure its children are valid.
-            if (Element.isElement(node) && node.type === 'title') {
-                for (const [child, childPath] of Node.children(editor, path)) {
-                    if (Element.isElement(child) && !editor.isInline(child)) {
-                        Transforms.unwrapNodes(editor, { at: childPath });
-                        return;
-                    }
-                }
-            }
-            normalizeNode(entry);
-        };
-
         return editor;
     },
 };

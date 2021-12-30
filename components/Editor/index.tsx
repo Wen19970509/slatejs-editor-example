@@ -1,5 +1,5 @@
 import { createEditor, Descendant, Transforms, Node, Element, BaseEditor } from 'slate';
-import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
+import { Slate, Editable, withReact } from 'slate-react';
 import { HistoryEditor, withHistory } from 'slate-history';
 import React from 'react';
 import CustomElement from './elements/CustomElement';
@@ -10,10 +10,11 @@ import SideToolbar from '@components/Editor/SideToolbar';
 import { withImages } from './elements/Image';
 import { withLinks } from './elements/Link';
 import { withEditableCards } from './elements/EditableCard';
-import Normalize from '@components/Editor/Normalize';
+import Normalize from '@components/Editor/utils/normalize';
+
 const SlateEditor = () => {
+    //段落設定
     const { withLayout } = Normalize;
-    // @refresh reset
     //初始參數
     const initialValue: Descendant[] = [
         {

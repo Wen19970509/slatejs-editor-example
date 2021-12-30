@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { BaseEditor, Transforms } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor, useFocused, useSelected, useSlateStatic } from 'slate-react';

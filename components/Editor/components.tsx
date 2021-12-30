@@ -101,7 +101,6 @@ export const UploadImageButton = () => {
             e.stopPropagation();
         };
         const handleInputChange = (e) => {
-            console.log(e.target.files);
             const files = e.target.files;
             if (files.length > 0) {
                 const file = files[0];
