@@ -1,4 +1,4 @@
-import { BaseEditor, Range, Transforms } from 'slate';
+import { BaseEditor } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor, useSelected } from 'slate-react';
 import isUrl from 'is-url';

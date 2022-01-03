@@ -38,6 +38,14 @@ const Normalized = {
                             });
                         }
                     };
+                    const resetType = (type) => {
+                        if (Element.isElement(child) && child.type === 'title') {
+                            const newProperties: Partial<Element> = { type };
+                            Transforms.setNodes<Element>(editor, newProperties, {
+                                at: childPath,
+                            });
+                        }
+                    };
 
                     // noinspection FallThroughInSwitchStatementJS
                     switch (slateIndex) {
@@ -45,9 +53,9 @@ const Normalized = {
                             type = 'title';
                             enforceType(type);
                             break;
-                        case 1:
-                            type = 'paragraph';
                         default:
+                            type = 'paragraph';
+                            resetType(type);
                             break;
                     }
                 }

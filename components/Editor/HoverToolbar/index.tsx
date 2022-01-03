@@ -31,7 +31,7 @@ const HoverToolbar = () => {
     });
 
     return (
-        <div ref={ref} className=' py-1 px-1 absolute z-10  bg-black rounded transition-opacity transform duration-500 opacity-0 -top-10000 -left-10000'>
+        <div ref={ref} className='py-1 px-1 absolute z-10  bg-black rounded transition-opacity transform duration-500 opacity-0 -top-10000 -left-10000'>
             <FormatButton format='bold' icon='format_bold' />
             <FormatButton format='italic' icon='format_italic' />
             <FormatButton format='underline' icon='format_underlined' />
