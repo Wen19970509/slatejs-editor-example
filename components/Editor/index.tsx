@@ -1,17 +1,16 @@
-import { createEditor, Descendant, Transforms, Node, Element, BaseEditor } from 'slate';
+import { createEditor, Descendant } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
-import { HistoryEditor, withHistory } from 'slate-history';
+import { withHistory } from 'slate-history';
 import React from 'react';
 import CustomElement from './elements/CustomElement';
 import Leaf from './elements/Leaf';
-import { HOTKEYS, keycommand } from './utils/hotkeys';
+import { keycommand } from './utils/hotkeys';
 import HoverToolbar from './HoverToolbar';
 import SideToolbar from '@components/Editor/SideToolbar';
 import { withImages } from './elements/Image';
 import { withLinks } from './elements/Link';
 import { withEditableCards } from './elements/EditableCard';
 import Normalize from '@components/Editor/utils/normalize';
-
 const SlateEditor = () => {
     //段落設定
     const { withLayout } = Normalize;

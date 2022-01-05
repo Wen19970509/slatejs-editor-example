@@ -43,7 +43,7 @@ export const LinkComponent = ({ attributes, children, element }) => {
         boxShadow: selected ? '0 0 0 3px #ddd' : '',
     };
     return (
-        <a {...attributes} href={element.url} style={STY}>
+        <a {...attributes} href={element.url} style={STY} data-title={element.url}>
             <InlineChromiumBugfix />
             {children}
             <InlineChromiumBugfix />

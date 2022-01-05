@@ -60,7 +60,7 @@ export const BlockButton = ({ format, icon, title }) => {
     const editor = useSlate();
     return (
         <Button
-            title={title}
+            data-title={title}
             active={CustomEditor.isBlockActive(editor, format)}
             onMouseDown={(event) => {
                 event.preventDefault();
@@ -76,7 +76,7 @@ export const InsertImageButton = () => {
     const editor = useSlateStatic();
     return (
         <Button
-            title={'使用相片連結'}
+            data-title={'使用相片連結'}
             onMouseDown={(event) => {
                 event.preventDefault();
                 const url = window.prompt('加入相片連結:');
@@ -128,7 +128,7 @@ export const UploadImageButton = () => {
     };
     return (
         <Button
-            title={'上傳相片'}
+            data-title={'上傳相片'}
             onMouseDown={(event) => {
                 event.preventDefault();
                 if (uploaderRef.current) uploaderRef.current.click();

@@ -9,13 +9,38 @@
 [data-slate-editor="true"] > * + * {
     @apply mt-3;
 }
+[data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+}
+[data-title]:after {
+    content: attr(data-title);
+    background-color: rgb(75, 85, 99);
+    color: #fbfbfb;
+    font-size: 150%;
+    position: absolute;
+    padding: 1px 10px 5px 10px;
+    bottom: 0;
+    left: 110%;
+    white-space: nowrap;
+    box-shadow: 1px 1px 3px #222222;
+    opacity: 0;
+    z-index: 99999;
+    visibility: hidden;
+    border-radius: 10px;
+}
+[data-title] {
+    position: relative;
+}
+
 /* base層 default設定 */
 @layer base {
     * {
         @apply p-0 m-0 box-border;
     }
     a {
-        @apply underline text-blue-700;
+        @apply underline text-blue-700 cursor-pointer;
     }
     textarea {
         @apply leading-6;

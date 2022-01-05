@@ -2,7 +2,6 @@ import { Transforms, Element, Node, BaseEditor } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
 import { ParagraphElement, TitleElement } from '@components/Editor/types';
-import CustomEditor from '@components/Editor/utils/customSettings';
 //各段落樣式設定
 const Normalized = {
     //預設Layout ,強制內文必須包含H1 title
@@ -38,6 +37,7 @@ const Normalized = {
                             });
                         }
                     };
+                    //限制若為'title',重設為p type
                     const resetType = (type) => {
                         if (Element.isElement(child) && child.type === 'title') {
                             const newProperties: Partial<Element> = { type };

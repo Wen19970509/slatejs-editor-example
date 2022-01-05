@@ -12,7 +12,6 @@ module.exports = {
     // important: true,
     variants: {
         extend: {
-            display: ['group-hover'],
             backgroundColor: ['disabled'],
             borderColor: ['disabled'],
         },
