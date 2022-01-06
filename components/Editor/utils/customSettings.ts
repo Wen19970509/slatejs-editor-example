@@ -116,9 +116,9 @@ const CustomEditor = {
     },
 
     //image
-    insertImage(editor: BaseEditor & ReactEditor & HistoryEditor, url: any) {
+    insertImage(editor: BaseEditor & ReactEditor & HistoryEditor, url: any, alt: any) {
         const text = { text: '' };
-        const image: ImageElement = { type: 'image', url, children: [text] };
+        const image: ImageElement = { type: 'image', url, alt, children: [text] };
         const paragraph: ParagraphElement = {
             type: 'paragraph',
             children: [{ text: '' }],
@@ -126,6 +126,11 @@ const CustomEditor = {
         Transforms.insertNodes(editor, image);
         //預留一個p element
         Transforms.insertNodes(editor, paragraph);
+    },
+    setAlt(editor, url: any, alt: any, path) {
+        const text = { text: '' };
+        const image: ImageElement = { type: 'image', url, alt, children: [text] };
+        Transforms.setNodes(editor, image, { at: path });
     },
     isImageUrl(url: string) {
         if (!url) return false;

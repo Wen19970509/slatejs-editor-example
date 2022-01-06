@@ -19,6 +19,7 @@ export type HeadingElement = {
 export type ImageElement = {
     type: 'image';
     url: string;
+    alt?: string;
     children: EmptyText[];
 };
 export type TitleElement = { type: 'title'; children: Descendant[] };

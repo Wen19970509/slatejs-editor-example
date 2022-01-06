@@ -1,5 +1,5 @@
 ### 使用方式
-<br/>此為Slate + NextJS 範本，使用TailwindCSS 進行Style制定
+<br/>Slate + NextJS 範本，使用TailwindCSS 進行Style制定
 ```
     npm ci  //安裝
 

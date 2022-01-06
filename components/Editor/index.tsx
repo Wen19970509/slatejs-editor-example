@@ -26,7 +26,7 @@ const SlateEditor = () => {
         },
     ];
     //value 讀取LocalStorage 是否有內容，若無則調用初始設定
-    const [value, setValue] = React.useState<Descendant[]>(initialValue);
+    const [value, setValue] = React.useState<Descendant[]>(JSON.parse(typeof window !== 'undefined' && localStorage.getItem('content')) || initialValue);
     //(JSON.parse(typeof window !== 'undefined' && localStorage.getItem('content')) || initialValue)
     //讀取LocalStorage
     // 初始editor 設定，使用官方提供的useMemo 撰寫，在熱開發狀態會報錯
@@ -46,12 +46,12 @@ const SlateEditor = () => {
             value={value}
             onChange={(newValue) => {
                 setValue(newValue);
-                //將變更的資料用Json形式預存至LocalStorage內
-                // const isAstChange = editor.operations.some((op) => 'set_selection' !== op.type);
-                // if (isAstChange) {
-                //     const content = JSON.stringify(newValue);
-                //     typeof window !== 'undefined' && localStorage.setItem('content', content);
-                // }
+                // 將變更的資料用Json形式預存至LocalStorage內
+                const isAstChange = editor.operations.some((op) => 'set_selection' !== op.type);
+                if (isAstChange) {
+                    const content = JSON.stringify(newValue);
+                    typeof window !== 'undefined' && localStorage.setItem('content', content);
+                }
             }}
         >
             <SideToolbar />
