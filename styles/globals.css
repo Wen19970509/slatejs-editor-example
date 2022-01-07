@@ -56,13 +56,13 @@
         @apply underline;
     }
     h1 {
-        @apply text-5xl;
+        @apply text-6xl font-bold;
     }
     h2 {
-        @apply text-3xl;
+        @apply text-4xl font-bold;
     }
     h3 {
-        @apply text-2xl;
+        @apply text-3xl font-bold;
     }
     ul {
         @apply list-disc list-inside;
@@ -80,9 +80,9 @@
         margin-left: 0;
         margin-right: 0;
         padding-left: 10px;
-        color: #aaa;
+        color: #929191;
         font-style: italic;
-        @apply text-xl;
+        @apply text-2xl;
     }
     blockquote[dir='rtl'] {
         border-left: none;

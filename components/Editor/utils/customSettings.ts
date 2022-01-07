@@ -5,7 +5,6 @@ import { ReactEditor } from 'slate-react';
 import { EditableCardElement, ImageElement, LinkElement, ParagraphElement } from '../types';
 import isUrl from 'is-url';
 import imageExtensions from 'image-extensions';
-import { off } from 'process';
 
 const CustomEditor = {
     isBlockActive(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
