@@ -1,6 +1,6 @@
 import isHotkey from 'is-hotkey';
 import CustomEditor from '@components/Editor/utils/customSettings';
-import { Editor, Element, Transforms, Text, Node } from 'slate';
+import { Editor, Transforms, Node } from 'slate';
 import { ParagraphElement } from '@components/Editor/types';
 
 export const HOTKEYS = {
@@ -11,7 +11,6 @@ export const HOTKEYS = {
 };
 
 export const keycommand = (e, editor) => {
-    console.log(e);
     //shift + enter =>  soft break
     if (e.shiftKey && e.key === 'Enter') {
         e.preventDefault();
@@ -53,9 +52,29 @@ export const keycommand = (e, editor) => {
         if (e.key === 'Backspace') {
             e.preventDefault();
             editor.deleteBackward('block');
+            return;
         }
     }
-
+    if (e.key === 'Backspace') {
+        const currentNode = Editor.node(editor, editor.selection);
+        const [text] = currentNode;
+        //獲得現在的format
+        const findFormat = (formats: string[]) => {
+            for (let i = 0; i < formats.length; i++) {
+                if (CustomEditor.isBlockActive(editor, formats[i])) {
+                    return formats[i];
+                }
+            }
+            return null;
+        };
+        const formats = ['block-quote', 'title', 'numbered-list', 'bulleted-list', 'heading-two', 'heading-three'];
+        const currentFormat = findFormat(formats);
+        if (!!currentFormat && !Node.string(text)) {
+            //若block內無文字，有format狀態，先回復為paragraph
+            e.preventDefault();
+            CustomEditor.toggleBlock(editor, currentFormat);
+        }
+    }
     for (const hotkey in HOTKEYS) {
         if (isHotkey(hotkey, e as any)) {
             e.preventDefault();
