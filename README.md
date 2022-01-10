@@ -43,3 +43,4 @@
 - `Enter` - 列表型態時無內容自動回復為default
 - `Enter` - 標題型態斷行時不繼承，回復為default
 - `ctrl/cmd + Backspace` - 刪除整個區塊 
+- `Backspace` - 段落內無文字時，會先清除樣式再刪除段落
