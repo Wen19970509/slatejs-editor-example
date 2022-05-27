@@ -11,6 +11,7 @@ import { withImages } from './elements/Image';
 import { withLinks } from './elements/Link';
 import { withEditableCards } from './elements/EditableCard';
 import Normalize from '@components/Editor/utils/normalize';
+import { withEmbeds } from './elements/Embed';
 const SlateEditor = () => {
     //段落設定
     const { withLayout } = Normalize;
@@ -31,7 +32,7 @@ const SlateEditor = () => {
     //讀取LocalStorage
     // 初始editor 設定，使用官方提供的useMemo 撰寫，在熱開發狀態會報錯
     const editorRef = React.useRef<any>();
-    if (!editorRef.current) editorRef.current = withLayout(withEditableCards(withLinks(withImages(withHistory(withReact(createEditor()))))));
+    if (!editorRef.current) editorRef.current = withLayout(withEmbeds(withEditableCards(withLinks(withImages(withHistory(withReact(createEditor())))))));
     const editor = editorRef.current;
 
     //CustomElement 切換 ，使用useCallback減少FC多餘呼叫
@@ -45,9 +46,14 @@ const SlateEditor = () => {
             editor={editor}
             value={value}
             onChange={(newValue) => {
+                console.log('newValue', newValue);
+
                 setValue(newValue);
                 // 將變更的資料用Json形式預存至LocalStorage內
+                // 除了type是'set_selection'以外的，都會被存到localStorage裡面
                 const isAstChange = editor.operations.some((op) => 'set_selection' !== op.type);
+                console.log('editor.operations', editor.operations);
+
                 if (isAstChange) {
                     const content = JSON.stringify(newValue);
                     typeof window !== 'undefined' && localStorage.setItem('content', content);

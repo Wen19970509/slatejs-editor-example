@@ -1,5 +1,5 @@
 import React from 'react';
-import { BlockButton, InsertImageButton, InsertEditableCardButton, UploadImageButton } from '../components';
+import { BlockButton, InsertImageButton, InsertEditableCardButton, UploadImageButton, EmbedButton } from '../components';
 function SideToolbar() {
     return (
         <div className='flex flex-col z-10 bg-gray-600  rounded fixed py-1 px-1 left-28'>
@@ -10,6 +10,7 @@ function SideToolbar() {
             <BlockButton format='bulleted-list' icon='format_list_bulleted' title='一般列表' />
             <InsertImageButton />
             <UploadImageButton />
+            <EmbedButton />
             <InsertEditableCardButton />
         </div>
     );

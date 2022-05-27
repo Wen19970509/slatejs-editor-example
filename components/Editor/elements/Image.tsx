@@ -13,16 +13,20 @@ export const withImages = (editor: BaseEditor & ReactEditor & HistoryEditor) => 
 
     editor.insertData = (data) => {
         const text = data.getData('text/plain');
+
         const { files } = data;
+
         const alt = null;
         if (files && files.length > 0) {
             for (const file of files) {
                 const reader = new FileReader();
                 const [mime] = file.type.split('/');
+                console.log('mime', mime);
 
                 if (mime === 'image') {
                     reader.addEventListener('load', () => {
                         const url = reader.result;
+                        console.log('url', url);
 
                         CustomEditor.insertImage(editor, url, alt);
                     });
@@ -36,13 +40,13 @@ export const withImages = (editor: BaseEditor & ReactEditor & HistoryEditor) => 
             insertData(data);
         }
     };
+
     return editor;
 };
 
 export const Image = ({ attributes, children, element }) => {
     const editor = useSlateStatic();
     const path = ReactEditor.findPath(editor, element);
-
     const selected = useSelected();
     const focused = useFocused();
     const imgSTY = {

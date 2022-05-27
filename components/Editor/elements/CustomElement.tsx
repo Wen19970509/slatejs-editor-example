@@ -1,9 +1,12 @@
 import { EditableCard } from './EditableCard';
+import { EmbedElement } from './Embed';
 import { Image } from './Image';
 import { LinkComponent } from './Link';
 const CustomElement = (props) => {
     const { attributes, children, element } = props;
     switch (element.type) {
+        case 'embed':
+            return <EmbedElement {...props} />;
         case 'editable-card':
             return <EditableCard {...props} />;
         case 'link':

@@ -50,7 +50,7 @@ export const FormatButton = ({ format, icon }) => {
             disabled={CustomEditor.isFormatDisabled(editor, format)}
             onMouseDown={(event) => {
                 event.preventDefault();
-                //disabled.
+                //disabled
                 if (CustomEditor.isFormatDisabled(editor, format)) return;
                 CustomEditor.toggleFormat(editor, format);
             }}
@@ -106,6 +106,8 @@ export const UploadImageButton = () => {
         };
         const handleInputChange = (e) => {
             const files = e.target.files;
+            console.log('files', files);
+
             if (files.length > 0) {
                 const file = files[0];
                 const reader = new FileReader();
@@ -113,6 +115,8 @@ export const UploadImageButton = () => {
                 reader.readAsDataURL(file);
                 reader.onload = (e) => {
                     const url = e.target.result as string;
+                    console.log('url', url);
+
                     const alt = null;
                     if (!url) return;
                     CustomEditor.insertImage(editor, url, alt);
@@ -179,6 +183,22 @@ export const RemoveLinkButton = () => {
             }}
         >
             <Icon>link_off</Icon>
+        </Button>
+    );
+};
+
+// 插入嵌入網站標籤
+export const EmbedButton = () => {
+    const editor = useSlateStatic();
+    return (
+        <Button
+            data-title={'嵌入連結'}
+            onMouseDown={(event) => {
+                event.preventDefault();
+                CustomEditor.embed(editor);
+            }}
+        >
+            <BlockIcon>label_important_outline</BlockIcon>
         </Button>
     );
 };

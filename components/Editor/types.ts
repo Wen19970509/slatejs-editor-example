@@ -30,6 +30,11 @@ export type EmptyText = {
 };
 export type LinkElement = { type: 'link'; url: string; children: Descendant[] };
 export type BlockQuoteElement = { type: 'block-quote'; children: Descendant[] };
+export type EmbedElement = {
+    type: 'embed';
+    url: string;
+    children: Descendant[];
+};
 export type EditableCardElement = {
     type: 'editable-card';
     children: EmptyText[];
@@ -39,7 +44,16 @@ export type BulletedListElement = {
     type: 'bulleted-list';
     children: Descendant[];
 };
-export type CustomElement = CodeElement | ParagraphElement | HeadingElement | ImageElement | LinkElement | EditableCardElement | TitleElement | ListItemElement;
+export type CustomElement =
+    | CodeElement
+    | ParagraphElement
+    | HeadingElement
+    | ImageElement
+    | LinkElement
+    | EditableCardElement
+    | TitleElement
+    | ListItemElement
+    | EmbedElement;
 export type CustomText = { text: string };
 
 declare module 'slate' {

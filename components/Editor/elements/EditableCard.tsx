@@ -3,6 +3,7 @@ import { BaseEditor, Transforms } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor, useFocused, useSelected, useSlateStatic } from 'slate-react';
 import { DeleButton, Icon } from '../components';
+import CustomEditor from '../utils/customSettings';
 
 export const withEditableCards = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
     const { isVoid } = editor;
@@ -25,6 +26,8 @@ export const EditableCard = ({ attributes, children, element }) => {
     const divSTY = {
         boxShadow: selected && focused ? '0 0 0 3px #B4D5FF' : 'none',
     } as React.CSSProperties;
+
+    // CustomEditor.insertEditableCard(editor);
     return (
         // Need contentEditable=false or Firefox has issues with certain input types.
         <div {...attributes} contentEditable={false}>

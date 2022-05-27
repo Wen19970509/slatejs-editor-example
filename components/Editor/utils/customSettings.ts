@@ -2,7 +2,7 @@
 import { Editor, Text, Element, Transforms, Range, BaseEditor } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
-import { EditableCardElement, ImageElement, LinkElement, ParagraphElement } from '../types';
+import { EditableCardElement, EmbedElement, ImageElement, LinkElement, ParagraphElement } from '../types';
 import isUrl from 'is-url';
 import imageExtensions from 'image-extensions';
 
@@ -95,6 +95,10 @@ const CustomEditor = {
 
         const { selection } = editor;
         const isCollapsed = selection && Range.isCollapsed(selection);
+        console.log('selection', selection);
+
+        console.log('isCollapsed', isCollapsed);
+
         const link: LinkElement = {
             type: 'link',
             url,
@@ -102,8 +106,11 @@ const CustomEditor = {
         };
 
         if (isCollapsed) {
+            console.log('有');
+
             Transforms.insertNodes(editor, link);
         } else {
+            console.log('沒有');
             Transforms.wrapNodes(editor, link, { split: true });
             Transforms.collapse(editor, { edge: 'end' });
         }
@@ -118,6 +125,7 @@ const CustomEditor = {
     insertImage(editor: BaseEditor & ReactEditor & HistoryEditor, url: any, alt: any) {
         const text = { text: '' };
         const image: ImageElement = { type: 'image', url, alt, children: [text] };
+
         const paragraph: ParagraphElement = {
             type: 'paragraph',
             children: [{ text: '' }],
@@ -137,6 +145,25 @@ const CustomEditor = {
         const ext = new URL(url).pathname.split('.').pop();
         return imageExtensions.includes(ext);
     },
+
+    // 嵌入連結邏輯
+    embed(editor: BaseEditor & ReactEditor & HistoryEditor) {
+        const text = { text: '' };
+        const embedNode: EmbedElement = {
+            type: 'embed',
+            url: '',
+            children: [text],
+        };
+        const paragraph: ParagraphElement = {
+            type: 'paragraph',
+            children: [{ text: '' }],
+        };
+        // Transforms.insertNodes(editor, videoNode);
+        Transforms.wrapNodes(editor, embedNode, { split: true });
+        Transforms.insertNodes(editor, paragraph);
+    },
+
+    // 插入區塊邏輯
     insertEditableCard(editor: BaseEditor & ReactEditor & HistoryEditor) {
         const text = { text: '' };
         const voidNode: EditableCardElement = {
