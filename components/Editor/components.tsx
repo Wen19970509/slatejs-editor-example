@@ -50,7 +50,7 @@ export const FormatButton = ({ format, icon }) => {
             disabled={CustomEditor.isFormatDisabled(editor, format)}
             onMouseDown={(event) => {
                 event.preventDefault();
-                //disabled
+                //disabled.
                 if (CustomEditor.isFormatDisabled(editor, format)) return;
                 CustomEditor.toggleFormat(editor, format);
             }}
