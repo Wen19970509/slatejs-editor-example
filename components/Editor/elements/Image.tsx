@@ -12,25 +12,22 @@ export const withImages = (editor: BaseEditor & ReactEditor & HistoryEditor) => 
     };
 
     editor.insertData = (data) => {
+        console.log('image裡面的data', data);
+
         const text = data.getData('text/plain');
-
         const { files } = data;
-
         const alt = null;
         if (files && files.length > 0) {
             for (const file of files) {
                 const reader = new FileReader();
                 const [mime] = file.type.split('/');
-                console.log('mime', mime);
 
                 if (mime === 'image') {
                     reader.addEventListener('load', () => {
                         const url = reader.result;
                         console.log('url', url);
-
                         CustomEditor.insertImage(editor, url, alt);
                     });
-
                     reader.readAsDataURL(file);
                 }
             }
@@ -81,7 +78,7 @@ export const Image = ({ attributes, children, element }) => {
         // }
         setShow(true);
     };
-    //alt 輸入框
+    //alt 輸入框長甚麼樣子
     const InputBox = () => {
         let altInput = React.useRef(element.alt);
         const style = {
@@ -137,7 +134,8 @@ export const Image = ({ attributes, children, element }) => {
                 <AltButton active onClick={handleEditAlt} style={btnSTY}>
                     <Icon>mode_edit</Icon>
                 </AltButton>
-                <InputBox />
+                {/* ALT彈跳框 */}
+                {/* <InputBox /> */}
             </div>
         </div>
     );

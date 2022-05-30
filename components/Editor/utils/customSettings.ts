@@ -2,17 +2,17 @@
 import { Editor, Text, Element, Transforms, Range, BaseEditor } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
-import { EditableCardElement, EmbedElement, ImageElement, LinkElement, ParagraphElement } from '../types';
+import { CustomElement, EditableCardElement, EmbedElement, ImageElement, LinkElement, ParagraphElement } from '../types';
 import isUrl from 'is-url';
 import imageExtensions from 'image-extensions';
 
 const CustomEditor = {
-    isBlockActive(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
+    isBlockActive(editor: BaseEditor & ReactEditor & HistoryEditor, format: any, blockType = 'type') {
         const { selection } = editor;
         if (!selection) return false;
         const [match] = Array.from(
             Editor.nodes(editor, {
-                match: (n) => Element.isElement(n) && n.type === format,
+                match: (n) => Element.isElement(n) && n.type === format && n[blockType] === format,
             }),
         );
         return !!match;
@@ -53,6 +53,8 @@ const CustomEditor = {
     },
     Head_TYPES: ['title', 'heading-two', 'heading-three', 'block-quote'],
     List_TYPES: ['numbered-list', 'bulleted-list'],
+    Text_Align_Types: ['left', 'center', 'right', 'justify'],
+
     //文字樣式
     toggleFormat(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
         const isActive = CustomEditor.isFormatActive(editor, format);
@@ -60,15 +62,21 @@ const CustomEditor = {
     },
     //block區塊樣式
     toggleBlock(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
-        const isActive = CustomEditor.isBlockActive(editor, format);
+        const isActive = CustomEditor.isBlockActive(editor, format, CustomEditor.Text_Align_Types.includes(format) ? 'align' : 'type');
         const isList = CustomEditor.List_TYPES.includes(format);
         Transforms.unwrapNodes(editor, {
-            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && CustomEditor.List_TYPES.includes(n.type),
+            match: (n) =>
+                !Editor.isEditor(n) && Element.isElement(n) && CustomEditor.List_TYPES.includes(n.type) && !CustomEditor.Text_Align_Types.includes(format),
             split: true,
         });
-        const newProperties: Partial<Element> = {
-            type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-        };
+        let newProperties: Partial<Element>;
+        if (CustomEditor.Text_Align_Types.includes(format)) {
+            newProperties = {
+                align: isActive ? undefined : format,
+            };
+        } else {
+            newProperties = { type: isActive ? 'paragraph' : isList ? 'list-item' : format };
+        }
         Transforms.setNodes<Element>(editor, newProperties);
 
         if (!isActive && isList) {

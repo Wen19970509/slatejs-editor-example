@@ -64,7 +64,7 @@ export const BlockButton = ({ format, icon, title }) => {
     return (
         <Button
             data-title={title}
-            active={CustomEditor.isBlockActive(editor, format)}
+            active={CustomEditor.isBlockActive(editor, format, CustomEditor.Text_Align_Types.includes(format) ? 'align' : 'type')}
             onMouseDown={(event) => {
                 event.preventDefault();
                 CustomEditor.toggleBlock(editor, format);
