@@ -21,7 +21,11 @@ export const withHtml = (editor) => {
             const fragment = deserialize(parsed.body);
             console.log('parsed', parsed);
             console.log('fragment', fragment);
-            Transforms.insertFragment(editor, fragment);
+            try {
+                Transforms.insertFragment(editor, fragment);
+            } catch {
+                console.log('請確認貼上內容是否符合格式');
+            }
             return;
         }
         insertData(data);

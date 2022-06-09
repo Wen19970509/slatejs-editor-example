@@ -18,7 +18,11 @@ const Leaf = ({ attributes, children, leaf }) => {
         children = <del>{children}</del>;
     }
 
-    return <span {...attributes}>{children}</span>;
+    return (
+        <span {...attributes} {...(leaf.highlight && { 'data-cy': 'search-highlighted' })} className={`${leaf.bold && 'boldSTY'} ${leaf.highlight && 'bgSTY'}`}>
+            {children}
+        </span>
+    );
 };
 
 export default Leaf;

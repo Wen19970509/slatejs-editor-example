@@ -18,6 +18,20 @@ export const EmbedElement = ({ attributes, children, element }: any) => {
     const instagram_URL = url.replace('?utm_source=ig_web_copy_link', 'embed');
     //www.instagram.com/p/Cd3ArxrF5sj/?utm_source=ig_web_copy_link
 
+    // const facebook_URL = (
+    //     <iframe
+    //         src='https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FRealMadridTaiwan%2Fposts%2F443131121149691&show_text=true&width=500'
+    //         width='500'
+    //         height='558'
+    //         style='border:none;overflow:hidden'
+    //         scrolling='no'
+    //         frameborder='0'
+    //         allowfullscreen='true'
+    //         allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share'
+    //     ></iframe>
+    // );
+    // console.log('facebook_URL', facebook_URL.props.src.substr(12, 8)); // string of facebook
+
     return (
         <div {...attributes}>
             <div contentEditable={false}>

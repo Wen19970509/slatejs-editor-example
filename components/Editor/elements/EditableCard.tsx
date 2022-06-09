@@ -27,24 +27,23 @@ export const EditableCard = ({ attributes, children, element }) => {
         boxShadow: selected && focused ? '0 0 0 3px #B4D5FF' : 'none',
     } as React.CSSProperties;
 
-    // CustomEditor.insertEditableCard(editor);
     return (
         // Need contentEditable=false or Firefox has issues with certain input types.
         <div {...attributes} contentEditable={false}>
             <div className='p-2 shadow-sm border border-black relative' style={divSTY}>
                 <h4 className='text-center'>元件測試-名稱:</h4>
-                <input
+                <textarea
                     className='my-3 text-input'
-                    type='text'
+                    // type='text'
                     value={inputValue}
                     onChange={(e) => {
                         setInputValue(e.target.value);
                     }}
                 />
-                <h4>左撇子還右撇子:</h4>
+                {/* <h4>左撇子還右撇子:</h4>
                 <input className='w-unset' type='radio' name='handedness' value='left' /> Left
                 <br />
-                <input className='w-unset' type='radio' name='handedness' value='right' /> Right
+                <input className='w-unset' type='radio' name='handedness' value='right' /> Right */}
                 <DeleButton active onClick={() => Transforms.removeNodes(editor, { at: path })} style={btnSTY}>
                     <Icon>delete</Icon>
                 </DeleButton>

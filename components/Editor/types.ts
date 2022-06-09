@@ -39,7 +39,7 @@ export type EmbedElement = {
 };
 export type EditableCardElement = {
     type: 'editable-card';
-    children: EmptyText[];
+    children: CustomText[];
 };
 
 export type BulletedListElement = {

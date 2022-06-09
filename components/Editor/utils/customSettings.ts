@@ -173,10 +173,9 @@ const CustomEditor = {
 
     // 插入區塊邏輯
     insertEditableCard(editor: BaseEditor & ReactEditor & HistoryEditor) {
-        const text = { text: '' };
         const voidNode: EditableCardElement = {
             type: 'editable-card',
-            children: [text],
+            children: [{ text: '' }],
         };
         const paragraph: ParagraphElement = {
             type: 'paragraph',

@@ -40,6 +40,9 @@ export const Icon = React.forwardRef(({ ...props }: PropsWithChildren<BaseProps>
 export const BlockIcon = React.forwardRef(({ ...props }: PropsWithChildren<BaseProps>, ref: Ref<OrNull<HTMLSpanElement>>) => (
     <span {...props} ref={ref} className='material-icons  text-3xl align-text-bottom mx-1 my-1' />
 ));
+export const Toolbar = React.forwardRef(({ className, ...props }: PropsWithChildren<BaseProps>, ref: Ref<OrNull<HTMLDivElement>>) => (
+    <div {...props} ref={ref} className='relative toolbar' />
+));
 
 export const FormatButton = ({ format, icon }) => {
     const editor = useSlate();
