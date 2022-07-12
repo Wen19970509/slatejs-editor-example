@@ -1,0 +1,14 @@
+@layer components {
+    .toolbar {
+        @apply py-px px-4 mx-5 my-5 border-2 border-solid border-gray-400 w-64;
+    }
+}
+
+@layer utilities {
+    .boldSTY {
+        font-weight: 600;
+    }
+    .bgSTY {
+        background-color: #ffeeba;
+    }
+}

@@ -2,11 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './components.css';
 
-[data-slate-editor="true"] {
+[data-slate-editor='true'] {
     @apply px-6 pt-6;
 }
-[data-slate-editor="true"] > * + * {
+[data-slate-editor='true'] > * + * {
     @apply mt-3;
 }
 [data-title]:hover:after {
@@ -100,7 +101,6 @@
         padding: 3px;
     }
 }
-
 
 @layer utilities {
     .-top-10000 {

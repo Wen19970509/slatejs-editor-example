@@ -19,6 +19,7 @@ export const withLinks = (editor: BaseEditor & ReactEditor & HistoryEditor) => {
 
     editor.insertData = (data) => {
         const text = data.getData('text/plain');
+        console.log('getText', text);
 
         if (text && isUrl(text)) {
             CustomEditor.wrapLink(editor, text);
@@ -42,6 +43,8 @@ export const LinkComponent = ({ attributes, children, element }) => {
     const STY = {
         boxShadow: selected ? '0 0 0 3px #ddd' : '',
     };
+    console.log('element.url', element);
+
     return (
         <a {...attributes} href={element.url} style={STY} data-title={element.url}>
             <InlineChromiumBugfix />

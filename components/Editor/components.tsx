@@ -40,6 +40,9 @@ export const Icon = React.forwardRef(({ ...props }: PropsWithChildren<BaseProps>
 export const BlockIcon = React.forwardRef(({ ...props }: PropsWithChildren<BaseProps>, ref: Ref<OrNull<HTMLSpanElement>>) => (
     <span {...props} ref={ref} className='material-icons  text-3xl align-text-bottom mx-1 my-1' />
 ));
+export const Toolbar = React.forwardRef(({ className, ...props }: PropsWithChildren<BaseProps>, ref: Ref<OrNull<HTMLDivElement>>) => (
+    <div {...props} ref={ref} className='relative toolbar' />
+));
 
 export const FormatButton = ({ format, icon }) => {
     const editor = useSlate();
@@ -64,7 +67,7 @@ export const BlockButton = ({ format, icon, title }) => {
     return (
         <Button
             data-title={title}
-            active={CustomEditor.isBlockActive(editor, format)}
+            active={CustomEditor.isBlockActive(editor, format, CustomEditor.Text_Align_Types.includes(format) ? 'align' : 'type')}
             onMouseDown={(event) => {
                 event.preventDefault();
                 CustomEditor.toggleBlock(editor, format);
@@ -106,6 +109,8 @@ export const UploadImageButton = () => {
         };
         const handleInputChange = (e) => {
             const files = e.target.files;
+            console.log('files', files);
+
             if (files.length > 0) {
                 const file = files[0];
                 const reader = new FileReader();
@@ -113,6 +118,8 @@ export const UploadImageButton = () => {
                 reader.readAsDataURL(file);
                 reader.onload = (e) => {
                     const url = e.target.result as string;
+                    console.log('url', url);
+
                     const alt = null;
                     if (!url) return;
                     CustomEditor.insertImage(editor, url, alt);
@@ -179,6 +186,22 @@ export const RemoveLinkButton = () => {
             }}
         >
             <Icon>link_off</Icon>
+        </Button>
+    );
+};
+
+// 插入嵌入網站標籤
+export const EmbedButton = () => {
+    const editor = useSlateStatic();
+    return (
+        <Button
+            data-title={'嵌入連結'}
+            onMouseDown={(event) => {
+                event.preventDefault();
+                CustomEditor.embed(editor);
+            }}
+        >
+            <BlockIcon>label_important_outline</BlockIcon>
         </Button>
     );
 };

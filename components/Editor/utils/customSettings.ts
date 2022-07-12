@@ -2,17 +2,17 @@
 import { Editor, Text, Element, Transforms, Range, BaseEditor } from 'slate';
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react';
-import { EditableCardElement, ImageElement, LinkElement, ParagraphElement } from '../types';
+import { CustomElement, EditableCardElement, EmbedElement, ImageElement, LinkElement, ParagraphElement } from '../types';
 import isUrl from 'is-url';
 import imageExtensions from 'image-extensions';
 
 const CustomEditor = {
-    isBlockActive(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
+    isBlockActive(editor: BaseEditor & ReactEditor & HistoryEditor, format: any, blockType = 'type') {
         const { selection } = editor;
         if (!selection) return false;
         const [match] = Array.from(
             Editor.nodes(editor, {
-                match: (n) => Element.isElement(n) && n.type === format,
+                match: (n) => Element.isElement(n) && n.type === format && n[blockType] === format,
             }),
         );
         return !!match;
@@ -53,6 +53,8 @@ const CustomEditor = {
     },
     Head_TYPES: ['title', 'heading-two', 'heading-three', 'block-quote'],
     List_TYPES: ['numbered-list', 'bulleted-list'],
+    Text_Align_Types: ['left', 'center', 'right', 'justify'],
+
     //文字樣式
     toggleFormat(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
         const isActive = CustomEditor.isFormatActive(editor, format);
@@ -60,15 +62,21 @@ const CustomEditor = {
     },
     //block區塊樣式
     toggleBlock(editor: BaseEditor & ReactEditor & HistoryEditor, format: any) {
-        const isActive = CustomEditor.isBlockActive(editor, format);
+        const isActive = CustomEditor.isBlockActive(editor, format, CustomEditor.Text_Align_Types.includes(format) ? 'align' : 'type');
         const isList = CustomEditor.List_TYPES.includes(format);
         Transforms.unwrapNodes(editor, {
-            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && CustomEditor.List_TYPES.includes(n.type),
+            match: (n) =>
+                !Editor.isEditor(n) && Element.isElement(n) && CustomEditor.List_TYPES.includes(n.type) && !CustomEditor.Text_Align_Types.includes(format),
             split: true,
         });
-        const newProperties: Partial<Element> = {
-            type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-        };
+        let newProperties: Partial<Element>;
+        if (CustomEditor.Text_Align_Types.includes(format)) {
+            newProperties = {
+                align: isActive ? undefined : format,
+            };
+        } else {
+            newProperties = { type: isActive ? 'paragraph' : isList ? 'list-item' : format };
+        }
         Transforms.setNodes<Element>(editor, newProperties);
 
         if (!isActive && isList) {
@@ -95,6 +103,10 @@ const CustomEditor = {
 
         const { selection } = editor;
         const isCollapsed = selection && Range.isCollapsed(selection);
+        console.log('selection', selection);
+
+        console.log('isCollapsed', isCollapsed);
+
         const link: LinkElement = {
             type: 'link',
             url,
@@ -102,8 +114,11 @@ const CustomEditor = {
         };
 
         if (isCollapsed) {
+            console.log('有');
+
             Transforms.insertNodes(editor, link);
         } else {
+            console.log('沒有');
             Transforms.wrapNodes(editor, link, { split: true });
             Transforms.collapse(editor, { edge: 'end' });
         }
@@ -118,6 +133,7 @@ const CustomEditor = {
     insertImage(editor: BaseEditor & ReactEditor & HistoryEditor, url: any, alt: any) {
         const text = { text: '' };
         const image: ImageElement = { type: 'image', url, alt, children: [text] };
+
         const paragraph: ParagraphElement = {
             type: 'paragraph',
             children: [{ text: '' }],
@@ -137,11 +153,29 @@ const CustomEditor = {
         const ext = new URL(url).pathname.split('.').pop();
         return imageExtensions.includes(ext);
     },
-    insertEditableCard(editor: BaseEditor & ReactEditor & HistoryEditor) {
+
+    // 嵌入連結邏輯
+    embed(editor: BaseEditor & ReactEditor & HistoryEditor) {
         const text = { text: '' };
+        const embedNode: EmbedElement = {
+            type: 'embed',
+            url: '',
+            children: [text],
+        };
+        const paragraph: ParagraphElement = {
+            type: 'paragraph',
+            children: [{ text: '' }],
+        };
+        // Transforms.insertNodes(editor, videoNode);
+        Transforms.wrapNodes(editor, embedNode, { split: true });
+        Transforms.insertNodes(editor, paragraph);
+    },
+
+    // 插入區塊邏輯
+    insertEditableCard(editor: BaseEditor & ReactEditor & HistoryEditor) {
         const voidNode: EditableCardElement = {
             type: 'editable-card',
-            children: [text],
+            children: [{ text: '' }],
         };
         const paragraph: ParagraphElement = {
             type: 'paragraph',
